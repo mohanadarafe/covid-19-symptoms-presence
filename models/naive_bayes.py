@@ -13,7 +13,7 @@ def naive_bayes():
     DATA_FILE = utils.get_data_directory()
 
     X, y = preprocess.preprocess_data(DATA_FILE)
-    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.8)
+    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.7)
 
     model = clf.fit(X_train, y_train)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
