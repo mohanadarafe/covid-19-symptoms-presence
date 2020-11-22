@@ -15,3 +15,9 @@ Make sure you have conda installed on your machine.
 conda env create --name covid --file=environment.yml
 conda activate covid
 ```
+
+### Running the code
+Once your environment is setup, simply run the following command to execute all models.
+```
+python run.py
+```
