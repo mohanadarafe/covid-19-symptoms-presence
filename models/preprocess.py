@@ -1,6 +1,6 @@
-from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
+import os
 
 def load_data(filename):
     '''
@@ -14,19 +14,23 @@ def preprocess_data(filename):
     The following function will preprocess the data by limiting our dataset
     to only contain symptoms.
     '''
+    assert os.path.isfile(filename), "The file you inputted does not exist."
     data = load_data(filename)
     
     # We removed unwanted columns that are not symptoms of COVID-19
     sanitized_data = np.delete(data, slice(13,20), 1)
 
-    X = sanitized_data[:, :-1]
-    y = sanitized_data[:, -1]
+    X = convert(sanitized_data[:, :-1])
+    y = convert(sanitized_data[:, -1])
     return X, y
 
-def split_data(X, y, training_split):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size = training_split, random_state = 0)
-    return X_train, X_test, y_train, y_test
+def convert(data):
+    '''
+    The following function converts yes/no's to 1's/0's
+    '''
+    data = np.where(data == "Yes", 1, data)
+    data = np.where(data == "No", 0, data)
+    return data.astype(int)
 
 if __name__ == "__main__":
     X, y = preprocess_data("data/covid-dataset.csv")
-    X_train, X_test, y_train, y_test = split_data(X, y, 0.65)
