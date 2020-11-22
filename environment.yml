@@ -7,6 +7,3 @@ dependencies:
 - matplotlib
 - pandas
 - scikit-learn
-- pip
-- pip:
-  - 'imbalanced-learn'

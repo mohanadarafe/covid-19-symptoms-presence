@@ -1,18 +1,6 @@
 import numpy as np
 import pandas as pd
 import os
-from imblearn.over_sampling import RandomOverSampler
-from collections import Counter
-
-def oversample(filename):
-    '''
-    The following function will oversample the data (duplicate the minority) to tackle our imbalance problem.
-    '''
-    X, y = preprocess_data(filename)
-    oversample = RandomOverSampler(sampling_strategy=0.5)
-    X_over, y_over = oversample.fit_resample(X, y)
-    print('Oversampled dataset shape %s' % Counter(y_over))
-    return X_over, y_over
 
 def load_data(filename):
     '''
@@ -34,7 +22,6 @@ def preprocess_data(filename):
 
     X = convert(sanitized_data[:, :-1])
     y = convert(sanitized_data[:, -1])
-    print('Original dataset shape %s' % Counter(y))
     return X, y
 
 def convert(data):
