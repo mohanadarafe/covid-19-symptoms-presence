@@ -51,6 +51,17 @@ def _create_directories(dirName: str):
     while 'environment.yml' not in os.listdir():
         os.chdir('..')
 
+def display_metrics(report: dict):
+    '''
+    Display the metrics of a model on the console.
+    ''' 
+    NO_COVID = report['No']
+    YES_COVID = report['Yes']
+
+    print(f'\t\tprecision\trecall\t\tf1')
+    print(f'\tNo\t{round(NO_COVID["precision"], 3)}\t\t{round(NO_COVID["recall"], 3)}\t\t{round(NO_COVID["f1-score"], 3)}')
+    print(f'\tYes\t{round(YES_COVID["precision"], 3)}\t\t{round(YES_COVID["recall"], 3)}\t\t{round(YES_COVID["f1-score"], 3)}')
+
 def _save_metrics(report: dict, dirName: str):
     '''
     Saves small report text file containing information on model metrics.

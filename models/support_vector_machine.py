@@ -8,7 +8,8 @@ from sklearn.metrics import plot_confusion_matrix
 
 clf = svm.SVC(kernel="linear")
 
-def support_vector_machine(sampling):
+def support_vector_machine(sampling = False):
+    print("="*60)
     print("Running support vector machine...")
     DATA_FILE = utils.get_data_directory()
 
@@ -23,16 +24,14 @@ def support_vector_machine(sampling):
 
     model = clf.fit(X_train, y_train)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    report = classification_report(y_test, model.predict(X_test), target_names=["No", "Yes"])
-    print(report)
+    utils.display_metrics(report_dict)
 
     weights = model.coef_
-    print(weights)
     features = utils.get_feature_names()
     top_weights = list(sorted(enumerate(weights[0]), key = lambda x: x[1], reverse = True))
 
     u'•' == u'\u2022'
-    print(f'The 3 features with the largest weights assigned to them are: ')
+    print(f'\nThe top three features with the largest weights assigned to them are: ')
     print(f'\t\u2022 {features[top_weights[0][0]]} with a mean importance of {round(top_weights[0][1], 4)}')
     print(f'\t\u2022 {features[top_weights[1][0]]} with a mean importance of {round(top_weights[1][1], 4)}')
     print(f'\t\u2022 {features[top_weights[2][0]]} with a mean importance of {round(top_weights[2][1], 4)}') 

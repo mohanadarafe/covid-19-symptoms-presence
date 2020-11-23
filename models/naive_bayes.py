@@ -8,7 +8,7 @@ from sklearn.metrics import plot_confusion_matrix
 
 clf = GaussianNB()
 
-def naive_bayes(sampling):
+def naive_bayes(sampling = False):
     print("Running Gaussian Naive Bayes...")
     DATA_FILE = utils.get_data_directory()
 
@@ -23,8 +23,7 @@ def naive_bayes(sampling):
 
     model = clf.fit(X_train, y_train)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    report = classification_report(y_test, model.predict(X_test), target_names=["No", "Yes"])
-    print(report)
+    utils.display_metrics(report_dict)
 
     '''
     Since GNB does not have a native way of getting feature importances, we use permutation importance.
@@ -35,7 +34,7 @@ def naive_bayes(sampling):
     features = utils.get_feature_names()
     feat_imp = list(sorted(enumerate(imps.importances_mean), key = lambda x: x[1], reverse = True)) 
     u'•' == u'\u2022'
-    print(f'The top three features are: ')
+    print(f'\nThe top three features are: ')
     print(f'\t\u2022 {features[feat_imp[0][0]]} with a mean importance of {round(feat_imp[0][1], 4)}')
     print(f'\t\u2022 {features[feat_imp[1][0]]} with a mean importance of {round(feat_imp[1][1], 4)}')
     print(f'\t\u2022 {features[feat_imp[2][0]]} with a mean importance of {round(feat_imp[2][1], 4)}')

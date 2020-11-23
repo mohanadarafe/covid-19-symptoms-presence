@@ -8,7 +8,7 @@ if __name__ == "__main__":
     os.makedirs("results")
 
     # Change argument to True to use oversampling
-    gnb.naive_bayes(False)
-    dt.decision_tree(False)
-    rf.random_forest(False)
-    svm.support_vector_machine(False)
+    gnb.naive_bayes()
+    dt.decision_tree()
+    rf.random_forest()
+    svm.support_vector_machine()
