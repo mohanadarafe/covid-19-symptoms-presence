@@ -14,6 +14,10 @@ Make sure you have conda installed on your machine.
 ```
 conda env create --name covid --file=environment.yml
 conda activate covid
+
+To update the enviromnment
+```
+conda env update --file environment.yml
 ```
 
 ### Running the code
