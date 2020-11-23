@@ -7,5 +7,5 @@ if __name__ == "__main__":
         shutil.rmtree("results")
     os.makedirs("results")
 
-    gnb.naive_bayes()
-    dt.decision_tree()
+    gnb.naive_bayes(False)
+    dt.decision_tree(True)

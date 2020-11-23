@@ -8,12 +8,18 @@ from sklearn.metrics import plot_confusion_matrix
 
 clf = GaussianNB()
 
-def naive_bayes():
+def naive_bayes(sampling):
     print("Running Gaussian Naive Bayes...")
     DATA_FILE = utils.get_data_directory()
 
-    X, y = preprocess.preprocess_data(DATA_FILE)
-    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.7)
+    # The argument of the function will determine weather we use oversampling or not
+    if(sampling):
+        process_method = preprocess.oversample(DATA_FILE)
+    else:
+        process_method = preprocess.preprocess_data(DATA_FILE)
+
+    X, y = process_method
+    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.8)
 
     model = clf.fit(X_train, y_train)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])

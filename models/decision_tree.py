@@ -5,7 +5,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.metrics import plot_confusion_matrix
 
-def decision_tree():
+def decision_tree(sampling):
     print("="*60)
     print("\nRunning Decision Tree...")
     DATA_FILE = utils.get_data_directory()
@@ -18,7 +18,13 @@ def decision_tree():
 
     clf = GridSearchCV(DecisionTreeClassifier(), param_grid=param_grid)
 
-    X, y = preprocess.preprocess_data(DATA_FILE)
+    # The argument of the function will determine weather we use oversampling or not
+    if(sampling):
+        process_method = preprocess.oversample(DATA_FILE)
+    else:
+        process_method = preprocess.preprocess_data(DATA_FILE)
+
+    X, y = process_method
     X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.7)
 
     model = clf.fit(X_train, y_train)
@@ -37,6 +43,3 @@ def decision_tree():
     print(f'\t\u2022 {features[top_feature_importances[2][0]]} with a mean importance of {round(top_feature_importances[2][1], 4)}') 
 
     utils.generate_report("DecisionTree", "Decision Tree", model, X_test, y_test, report_dict)
-
-if __name__ == "__main__":
-    decision_tree()
