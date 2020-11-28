@@ -1,5 +1,10 @@
 import os, shutil
-import models.utils as utils, models.naive_bayes as gnb, models.decision_tree as dt, models.random_forest as rf, models.support_vector_machine as svm
+import models.utils as utils
+import models.naive_bayes as gnb
+import models.decision_tree as dt
+import models.random_forest as rf
+import models.support_vector_machine as svm
+import models.neural_network as nn
 
 if __name__ == "__main__":
     assert utils.assert_correct_directory(), f"Make sure you execute from the project root directory!"
@@ -12,3 +17,4 @@ if __name__ == "__main__":
     dt.decision_tree()
     rf.random_forest()
     svm.support_vector_machine(True)
+    nn.neural_network()
