@@ -11,7 +11,7 @@ def oversample(filename):
     X, y = preprocess_data(filename)
     oversample = imblearn.over_sampling.RandomOverSampler(sampling_strategy=0.5)
     X_over, y_over = oversample.fit_resample(X, y)
-    print('Oversampled dataset shape %s' % Counter(y_over))
+    print(f'Oversampled dataset shape {Counter(y_over)}')
     return X_over, y_over
 
 def load_data(filename):

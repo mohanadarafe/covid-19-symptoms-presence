@@ -1,22 +1,16 @@
+import numpy as np
 import matplotlib.pyplot as plt 
 import models.preprocess as preprocess, models.utils as utils
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import classification_report
 from sklearn.metrics import plot_confusion_matrix
+from sklearn.model_selection import PredefinedSplit
 
 def decision_tree(sampling = False):
     print("="*60)
     print("\nRunning Decision Tree...")
     DATA_FILE = utils.get_data_directory()
-
-    param_grid = {
-        'criterion': ['gini', 'entropy'],
-        'splitter': ['best', 'random'],
-        'min_samples_split': [2, 4, 5, 10, 13]
-    }
-
-    clf = GridSearchCV(DecisionTreeClassifier(), param_grid=param_grid)
 
     # The argument of the function will determine weather we use oversampling or not
     if(sampling):
@@ -25,9 +19,23 @@ def decision_tree(sampling = False):
         process_method = preprocess.preprocess_data(DATA_FILE)
 
     X, y = process_method
-    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.7)
+    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.6)
+    X_val, X_test, y_val, y_test = utils.split_data(X_test, y_test, 0.5)
 
-    model = clf.fit(X_train, y_train)
+    X_grid = np.concatenate((X_train, X_val))
+    y_grid = np.concatenate((y_train, y_val))
+    separation_boundary = [-1 for _ in y_train] + [0 for _ in y_val]
+    ps = PredefinedSplit(separation_boundary)
+
+    param_grid = {
+        'criterion': ['gini', 'entropy'],
+        'splitter': ['best', 'random'],
+        'min_samples_split': [2, 4, 5, 10, 13],
+        'min_samples_leaf': [1, 2, 5, 8, 13]
+    }
+
+    clf = RandomizedSearchCV(DecisionTreeClassifier(), param_grid, cv=ps)
+    model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
     utils.display_metrics(report_dict)
     
