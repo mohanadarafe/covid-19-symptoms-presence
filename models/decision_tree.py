@@ -7,7 +7,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 
-def decision_tree(sampling = False):
+def decision_tree(sampling = False, isNotebook = False):
     print("="*60)
     print("\nRunning Decision Tree...")
     DATA_FILE = utils.get_data_directory()
@@ -43,10 +43,12 @@ def decision_tree(sampling = False):
     features = utils.get_feature_names()
     top_feature_importances = list(sorted(enumerate(feature_importances), key = lambda x: x[1], reverse = True))
 
+    if isNotebook:
+        return top_feature_importances, model
+
     u'•' == u'\u2022'
     print(f'\nThe top three features are: ')
     print(f'\t\u2022 {features[top_feature_importances[0][0]]} with a mean importance of {round(top_feature_importances[0][1], 4)}')
     print(f'\t\u2022 {features[top_feature_importances[1][0]]} with a mean importance of {round(top_feature_importances[1][1], 4)}')
     print(f'\t\u2022 {features[top_feature_importances[2][0]]} with a mean importance of {round(top_feature_importances[2][1], 4)}') 
-
     utils.generate_report("DecisionTree", "Decision Tree", model, X_test, y_test, report_dict)

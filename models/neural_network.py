@@ -6,10 +6,7 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.inspection import permutation_importance
 from sklearn.model_selection import PredefinedSplit
-from sklearn.utils.testing import ignore_warnings
-from sklearn.exceptions import ConvergenceWarning
 
-@ignore_warnings(category=ConvergenceWarning)
 def neural_network(sampling = False):
     print("="*60)
     print("Neural network...")

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix 
 from sklearn.metrics import plot_confusion_matrix
+from sklearn.inspection import permutation_importance
 
 def split_data(X, y, training_split):
     '''
@@ -58,9 +59,10 @@ def display_metrics(report: dict):
     NO_COVID = report['No']
     YES_COVID = report['Yes']
 
-    print(f'\t\tprecision\trecall\t\tf1')
-    print(f'\tNo\t{round(NO_COVID["precision"], 3)}\t\t{round(NO_COVID["recall"], 3)}\t\t{round(NO_COVID["f1-score"], 3)}')
-    print(f'\tYes\t{round(YES_COVID["precision"], 3)}\t\t{round(YES_COVID["recall"], 3)}\t\t{round(YES_COVID["f1-score"], 3)}')
+    if __name__ == "__main__":
+        print(f'\t\tprecision\trecall\t\tf1')
+        print(f'\tNo\t{round(NO_COVID["precision"], 3)}\t\t{round(NO_COVID["recall"], 3)}\t\t{round(NO_COVID["f1-score"], 3)}')
+        print(f'\tYes\t{round(YES_COVID["precision"], 3)}\t\t{round(YES_COVID["recall"], 3)}\t\t{round(YES_COVID["f1-score"], 3)}')
 
 def _save_metrics(report: dict, dirName: str):
     '''
@@ -86,6 +88,7 @@ def _save_confusion_matrix(dirName: str, modelName: str, model, X, y):
     '''
     Saves confusion matrix picture.
     '''
+    plt.ioff()
     matrix = plot_confusion_matrix(model, X, y, display_labels=["No", "Yes"])
     plt.title(f"Confusion Matrix for {modelName}")
     plt.savefig(f"results/{dirName}/confusion_matrix")

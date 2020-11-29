@@ -16,5 +16,5 @@ if __name__ == "__main__":
     gnb.naive_bayes()
     dt.decision_tree()
     rf.random_forest()
-    svm.support_vector_machine(True)
+    svm.support_vector_machine()
     nn.neural_network()
