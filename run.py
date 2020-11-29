@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     # Change argument to True to use oversampling
     gnb.naive_bayes()
-    dt.decision_tree()
+    dt.decision_tree(True)
     rf.random_forest()
     svm.support_vector_machine()
     nn.neural_network()

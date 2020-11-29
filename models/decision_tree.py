@@ -7,14 +7,14 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 
-def decision_tree(sampling = False, isNotebook = False):
+def decision_tree(sampling = False, isNotebook = False, sampling_rate = 0.5):
     print("="*60)
     print("\nRunning Decision Tree...")
     DATA_FILE = utils.get_data_directory()
 
     # The argument of the function will determine weather we use oversampling or not
     if(sampling):
-        process_method = preprocess.oversample(DATA_FILE)
+        process_method = preprocess.oversample(DATA_FILE, sampling_rate)
     else:
         process_method = preprocess.preprocess_data(DATA_FILE)
 
