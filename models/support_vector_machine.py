@@ -8,7 +8,7 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 from sklearn.model_selection import RandomizedSearchCV
 
-def support_vector_machine(sampling = False):
+def support_vector_machine(sampling = False, isNotebook = False):
     print("="*60)
     print("Running support vector machine...")
     DATA_FILE = utils.get_data_directory()
@@ -43,6 +43,9 @@ def support_vector_machine(sampling = False):
     weights = model.best_estimator_.coef_
     features = utils.get_feature_names()
     top_weights = list(sorted(enumerate(weights[0]), key = lambda x: x[1], reverse = True))
+
+    if isNotebook:
+        return top_weights, model
 
     u'•' == u'\u2022'
     print(f'\nThe top three features with the largest weights assigned to them are: ')
