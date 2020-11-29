@@ -16,14 +16,12 @@ conda env create --name covid --file=environment.yml
 conda activate covid
 ```
 
-To update the enviromnment
-```
-conda env update --file environment.yml
-```
-
 ### Running the code
 Once your environment is setup, simply run the following command to execute all models.
 
 ```
 python run.py
 ```
+
+### Analysis
+You can find an in-depth analysis of our results in the [analysis notebook](https://github.com/mohanadarafe/covid-19-symptoms-presence/blob/main/analysis.ipynb) we created. We explain the dataset used, preprocessing tools, the performance of each model & breakdown of feature importances per model.
