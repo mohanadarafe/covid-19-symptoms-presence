@@ -8,7 +8,7 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 from sklearn.model_selection import RandomizedSearchCV
 
-def random_forest(sampling = False):
+def random_forest(sampling = False, isNotebook = False):
     print("="*60)
     print("Running Random Forest...")
     DATA_FILE = utils.get_data_directory()
@@ -44,6 +44,9 @@ def random_forest(sampling = False):
     feature_importances = model.best_estimator_.feature_importances_
     features = utils.get_feature_names()
     top_feature_importances = list(sorted(enumerate(feature_importances), key = lambda x: x[1], reverse = True))
+
+    if isNotebook:
+        return top_feature_importances, model
 
     u'•' == u'\u2022'
     print(f'\nThe top three features are: ')
