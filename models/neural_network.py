@@ -41,13 +41,7 @@ def neural_network(sampling = False):
     utils.display_metrics(report_dict)
 
     imps = permutation_importance(model, X_test, y_test)
-    features = utils.get_feature_names()
     top_feature_importances = list(sorted(enumerate(imps.importances_mean), key = lambda x: x[1], reverse = True))
 
-    u'•' == u'\u2022'
-    print(f'\nThe top three features are: ')
-    print(f'\t\u2022 {features[top_feature_importances[0][0]]} with a mean importance of {round(top_feature_importances[0][1], 4)}')
-    print(f'\t\u2022 {features[top_feature_importances[1][0]]} with a mean importance of {round(top_feature_importances[1][1], 4)}')
-    print(f'\t\u2022 {features[top_feature_importances[2][0]]} with a mean importance of {round(top_feature_importances[2][1], 4)}') 
-
+    utils.log_results(top_feature_importances)
     utils.generate_report("Neural Network", "MLP", model, X_test, y_test, report_dict)

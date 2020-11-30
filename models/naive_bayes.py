@@ -38,9 +38,5 @@ def naive_bayes(sampling = False, isNotebook = False):
     if isNotebook:
         return feat_imp
 
-    u'•' == u'\u2022'
-    print(f'\nThe top three features are: ')
-    print(f'\t\u2022 {features[feat_imp[0][0]]} with a mean importance of {round(feat_imp[0][1], 4)}')
-    print(f'\t\u2022 {features[feat_imp[1][0]]} with a mean importance of {round(feat_imp[1][1], 4)}')
-    print(f'\t\u2022 {features[feat_imp[2][0]]} with a mean importance of {round(feat_imp[2][1], 4)}')
+    utils.log_results(feat_imp)
     utils.generate_report("GNB", "Naive Bayes", model, X_test, y_test, report_dict)

@@ -40,15 +40,10 @@ def decision_tree(sampling = False, isNotebook = False, sampling_rate = 0.5):
     utils.display_metrics(report_dict)
     
     feature_importances = model.best_estimator_.feature_importances_
-    features = utils.get_feature_names()
     top_feature_importances = list(sorted(enumerate(feature_importances), key = lambda x: x[1], reverse = True))
 
     if isNotebook:
         return top_feature_importances, model
 
-    u'•' == u'\u2022'
-    print(f'\nThe top three features are: ')
-    print(f'\t\u2022 {features[top_feature_importances[0][0]]} with a mean importance of {round(top_feature_importances[0][1], 4)}')
-    print(f'\t\u2022 {features[top_feature_importances[1][0]]} with a mean importance of {round(top_feature_importances[1][1], 4)}')
-    print(f'\t\u2022 {features[top_feature_importances[2][0]]} with a mean importance of {round(top_feature_importances[2][1], 4)}') 
+    utils.log_results(top_feature_importances)
     utils.generate_report("DecisionTree", "Decision Tree", model, X_test, y_test, report_dict)

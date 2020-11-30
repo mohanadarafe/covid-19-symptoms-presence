@@ -102,3 +102,14 @@ def generate_report(dirName: str, modelName: str, model, X, y, report: dict):
 
     _save_confusion_matrix(dirName, modelName, model, X, y)
     _save_metrics(report, dirName)
+ 
+def log_results(top_feature_importances: tuple):
+    '''
+    The following will log results to the console.
+    '''
+    features = get_feature_names()
+    u'•' == u'\u2022'
+    print(f'\nThe top three features are: ')
+    print(f'\t\u2022 {features[top_feature_importances[0][0]]} with a mean importance of {round(top_feature_importances[0][1], 4)}')
+    print(f'\t\u2022 {features[top_feature_importances[1][0]]} with a mean importance of {round(top_feature_importances[1][1], 4)}')
+    print(f'\t\u2022 {features[top_feature_importances[2][0]]} with a mean importance of {round(top_feature_importances[2][1], 4)}') 

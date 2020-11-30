@@ -41,13 +41,7 @@ def support_vector_machine(sampling = False):
     utils.display_metrics(report_dict)
 
     weights = model.best_estimator_.coef_
-    features = utils.get_feature_names()
     top_weights = list(sorted(enumerate(weights[0]), key = lambda x: x[1], reverse = True))
 
-    u'•' == u'\u2022'
-    print(f'\nThe top three features with the largest weights assigned to them are: ')
-    print(f'\t\u2022 {features[top_weights[0][0]]} with a mean importance of {round(top_weights[0][1], 4)}')
-    print(f'\t\u2022 {features[top_weights[1][0]]} with a mean importance of {round(top_weights[1][1], 4)}')
-    print(f'\t\u2022 {features[top_weights[2][0]]} with a mean importance of {round(top_weights[2][1], 4)}') 
-
+    utils.log_results(top_weights)
     utils.generate_report("SVM", "SVM", model, X_test, y_test, report_dict)
