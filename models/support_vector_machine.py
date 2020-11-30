@@ -8,7 +8,7 @@ from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 from sklearn.model_selection import RandomizedSearchCV
 
-def support_vector_machine(sampling = False):
+def support_vector_machine(sampling = False, isNotebook = False):
     print("="*60)
     print("Running support vector machine...")
     DATA_FILE = utils.get_data_directory()
@@ -42,6 +42,9 @@ def support_vector_machine(sampling = False):
 
     weights = model.best_estimator_.coef_
     top_weights = list(sorted(enumerate(weights[0]), key = lambda x: x[1], reverse = True))
+
+    if isNotebook:
+        return top_weights, model
 
     utils.log_results(top_weights)
     utils.generate_report("SVM", "SVM", model, X_test, y_test, report_dict)
