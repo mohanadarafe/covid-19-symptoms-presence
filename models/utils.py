@@ -20,14 +20,17 @@ def assert_correct_directory() -> bool:
     '''
     return 'environment.yml' in os.listdir()
 
-def get_data_directory() -> str:
+def get_data_directory(fileName = "/covid-dataset.csv") -> str:
     '''
     Returns the path to the data file.
     '''
     while 'environment.yml' not in os.listdir():
         os.chdir('..')
     os.chdir('data')
-    return os.getcwd() + "/covid-dataset.csv"
+
+    assert os.path.isfile(os.getcwd() + fileName), "Does your input file exist?"
+
+    return os.getcwd() + fileName
 
 def get_feature_names() -> list:
     '''
@@ -59,10 +62,9 @@ def display_metrics(report: dict):
     NO_COVID = report['No']
     YES_COVID = report['Yes']
 
-    if __name__ == "__main__":
-        print(f'\t\tprecision\trecall\t\tf1')
-        print(f'\tNo\t{round(NO_COVID["precision"], 3)}\t\t{round(NO_COVID["recall"], 3)}\t\t{round(NO_COVID["f1-score"], 3)}')
-        print(f'\tYes\t{round(YES_COVID["precision"], 3)}\t\t{round(YES_COVID["recall"], 3)}\t\t{round(YES_COVID["f1-score"], 3)}')
+    print(f'\t\tprecision\trecall\t\tf1')
+    print(f'\tNo\t{round(NO_COVID["precision"], 3)}\t\t{round(NO_COVID["recall"], 3)}\t\t{round(NO_COVID["f1-score"], 3)}')
+    print(f'\tYes\t{round(YES_COVID["precision"], 3)}\t\t{round(YES_COVID["recall"], 3)}\t\t{round(YES_COVID["f1-score"], 3)}')
 
 def _save_metrics(report: dict, dirName: str):
     '''
@@ -93,7 +95,7 @@ def _save_confusion_matrix(dirName: str, modelName: str, model, X, y):
     plt.title(f"Confusion Matrix for {modelName}")
     plt.savefig(f"results/{dirName}/confusion_matrix")
 
-def generate_report(dirName: str, modelName: str, model, X, y, report: dict):
+def generate_report(dirName: str, modelName: str, model, X, y, report: dict, experiment = False):
     '''
     Generates report in results directory for every model trained.
     '''

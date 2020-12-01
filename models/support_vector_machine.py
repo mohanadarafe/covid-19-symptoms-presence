@@ -4,7 +4,6 @@ import models.preprocess as preprocess, models.utils as utils
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report
 from sklearn.inspection import permutation_importance
-from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 from sklearn.model_selection import GridSearchCV
 
@@ -34,17 +33,18 @@ def support_vector_machine(sampling = False, isNotebook = False):
         'kernel': ['linear']
     }
 
-    clf = GridSearchCV(SVC(probability=True), param_grid, cv=ps)
+    clf = GridSearchCV(SVC(random_state=0, probability=True), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    utils.display_metrics(report_dict)
 
     weights = model.best_estimator_.coef_
     top_weights = list(sorted(enumerate(weights[0]), key = lambda x: x[1], reverse = True))
 
     if isNotebook:
         return top_weights, model
+    else:
+        utils.display_metrics(report_dict)
 
     utils.log_results(top_weights)
     utils.generate_report("SVM", "SVM", model, X_test, y_test, report_dict)

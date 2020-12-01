@@ -37,6 +37,26 @@ def preprocess_data(filename):
     print('Original dataset shape %s' % Counter(y))
     return X, y
 
+def preprocess_experiment(filename):
+    '''
+    The following function will preprocess the experimental dataset
+    '''
+    assert os.path.isfile(filename), "The file you inputted does not exist."
+    data = convert(load_data(filename))
+    data = np.where(data > 1, 1, data)
+
+    dry_cough = data[:, 0]
+    fever = data[:, 1]
+    sore_throat = data[:, 2]
+    breathing_problems = data[:, 3]
+    output = data[:, -1]
+    
+    data = np.stack((breathing_problems, fever, dry_cough, sore_throat, output), axis=1)
+    X = data[:, :-1]
+    y = data[:, -1]
+    
+    return X, y
+    
 def convert(data):
     '''
     The following function converts yes/no's to 1's/0's

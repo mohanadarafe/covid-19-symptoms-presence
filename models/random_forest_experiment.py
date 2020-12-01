@@ -1,26 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt 
-import models.preprocess as preprocess, models.utils as utils
+import models.utils as utils, models.preprocess as preprocess
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
-from sklearn.inspection import permutation_importance
 from sklearn.model_selection import PredefinedSplit
 from sklearn.model_selection import GridSearchCV
 
-def random_forest(sampling = False, isNotebook = False):
+def random_forest():
     print("="*60)
-    print("Running Random Forest...")
-    DATA_FILE = utils.get_data_directory()
+    print("Running experiement on Random Forest...")
+    TRAIN_SET = utils.get_data_directory()
+    TEST_SET = utils.get_data_directory(fileName="/experiment-dataset.csv")
 
-    # The argument of the function will determine weather we use oversampling or not
-    if(sampling):
-        process_method = preprocess.oversample(DATA_FILE)
-    else:
-        process_method = preprocess.preprocess_data(DATA_FILE)
-
-    X, y = process_method
-    X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.6)
-    X_val, X_test, y_val, y_test = utils.split_data(X_test, y_test, 0.5)
+    X, y = preprocess.preprocess_data(TRAIN_SET)
+    X = np.delete(X, slice(4,13), 1)
+    X_train, X_val, y_train, y_val = utils.split_data(X, y, 0.9)
+    X_test, y_test = preprocess.preprocess_experiment(TEST_SET)
 
     X_grid = np.concatenate((X_train, X_val))
     y_grid = np.concatenate((y_train, y_val))
@@ -28,7 +23,6 @@ def random_forest(sampling = False, isNotebook = False):
     ps = PredefinedSplit(separation_boundary)
 
     param_grid = {
-        'n_estimators': [100, 500, 1000],
         'criterion': ['gini', 'entropy'],
         'min_samples_split': [2, 4, 5, 10, 13],
         'min_samples_leaf': [1, 2, 5, 8, 13]
@@ -37,16 +31,11 @@ def random_forest(sampling = False, isNotebook = False):
     clf = GridSearchCV(RandomForestClassifier(random_state=0), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
+    print(model.score(X_test, y_test))
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    
-
+    utils.display_metrics(report_dict)
+ 
     feature_importances = model.best_estimator_.feature_importances_
     top_feature_importances = list(sorted(enumerate(feature_importances), key = lambda x: x[1], reverse = True))
-
-    if isNotebook:
-        return top_feature_importances, model
-    else:
-        utils.display_metrics(report_dict)
-
     utils.log_results(top_feature_importances)
-    utils.generate_report("Random Forest", "Random Forest", model, X_test, y_test, report_dict)
+    utils.generate_report("Experiment Results", "Experimental Random Forest", model, X_test, y_test, report_dict)

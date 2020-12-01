@@ -3,7 +3,6 @@ import models.preprocess as preprocess, models.utils as utils
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
 from sklearn.inspection import permutation_importance
-from sklearn.metrics import plot_confusion_matrix
 import inspect
 
 
@@ -24,7 +23,6 @@ def naive_bayes(sampling = False, isNotebook = False):
 
     model = clf.fit(X_train, y_train)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    utils.display_metrics(report_dict)
 
     '''
     Since GNB does not have a native way of getting feature importances, we use permutation importance.
@@ -37,6 +35,8 @@ def naive_bayes(sampling = False, isNotebook = False):
 
     if isNotebook:
         return feat_imp
+    else:
+        utils.display_metrics(report_dict)
 
     utils.log_results(feat_imp)
     utils.generate_report("GNB", "Naive Bayes", model, X_test, y_test, report_dict)

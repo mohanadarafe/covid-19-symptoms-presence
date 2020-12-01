@@ -4,7 +4,6 @@ import models.preprocess as preprocess, models.utils as utils
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
-from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
 
 def decision_tree(sampling = False, isNotebook = False, sampling_rate = 0.5):
@@ -34,16 +33,17 @@ def decision_tree(sampling = False, isNotebook = False, sampling_rate = 0.5):
         'min_samples_leaf': [1, 2, 5, 8, 13]
     }
 
-    clf = GridSearchCV(DecisionTreeClassifier(), param_grid, cv=ps)
+    clf = GridSearchCV(DecisionTreeClassifier(random_state=0), param_grid, cv=ps)
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    utils.display_metrics(report_dict)
     
     feature_importances = model.best_estimator_.feature_importances_
     top_feature_importances = list(sorted(enumerate(feature_importances), key = lambda x: x[1], reverse = True))
 
     if isNotebook:
         return top_feature_importances, model
+    else:
+        utils.display_metrics(report_dict)
 
     utils.log_results(top_feature_importances)
     utils.generate_report("DecisionTree", "Decision Tree", model, X_test, y_test, report_dict)

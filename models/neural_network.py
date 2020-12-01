@@ -33,17 +33,18 @@ def neural_network(sampling = False, isNotebook = False):
         'solver': ['adam', 'sgd'],
     }
 
-    clf = GridSearchCV(MLPClassifier(), param_grid, cv=ps)
+    clf = GridSearchCV(MLPClassifier(random_state=0), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
-    utils.display_metrics(report_dict)
 
     imps = permutation_importance(model, X_test, y_test)
     top_feature_importances = list(sorted(enumerate(imps.importances_mean), key = lambda x: x[1], reverse = True))
 
     if (isNotebook):
         return top_feature_importances, model
+    else:
+        utils.display_metrics(report_dict)
 
     utils.log_results(top_feature_importances)
     utils.generate_report("Neural Network", "MLP", model, X_test, y_test, report_dict)
