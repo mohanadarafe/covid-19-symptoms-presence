@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, time
 import models.utils as utils
 import models.naive_bayes as gnb
 import models.decision_tree as dt
@@ -13,8 +13,11 @@ if __name__ == "__main__":
     os.makedirs("results")
 
     # Change argument to True to use oversampling
+    start = time.time()
     gnb.naive_bayes()
-    dt.decision_tree(True)
+    dt.decision_tree()
     rf.random_forest()
     svm.support_vector_machine()
     nn.neural_network()
+    end = time.time()
+    print(f'Done training the models in {round(end-start, 3)} seconds')

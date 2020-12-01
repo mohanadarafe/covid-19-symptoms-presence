@@ -7,7 +7,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.inspection import permutation_importance
 from sklearn.model_selection import PredefinedSplit
 
-def neural_network(sampling = False):
+def neural_network(sampling = False, isNotebook = False):
     print("="*60)
     print("Neural network...")
     DATA_FILE = utils.get_data_directory()
@@ -31,7 +31,6 @@ def neural_network(sampling = False):
         'activation': ['logistic', 'identity', 'tanh', 'relu'],
         'hidden_layer_sizes': [(80), (20, 10, 20, 10, 20)], 
         'solver': ['adam', 'sgd'],
-        'max_iter': [200]
     }
 
     clf = GridSearchCV(MLPClassifier(), param_grid, cv=ps)
@@ -42,6 +41,9 @@ def neural_network(sampling = False):
 
     imps = permutation_importance(model, X_test, y_test)
     top_feature_importances = list(sorted(enumerate(imps.importances_mean), key = lambda x: x[1], reverse = True))
+
+    if (isNotebook):
+        return top_feature_importances, model
 
     utils.log_results(top_feature_importances)
     utils.generate_report("Neural Network", "MLP", model, X_test, y_test, report_dict)
