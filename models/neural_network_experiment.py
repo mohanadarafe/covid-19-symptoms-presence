@@ -1,14 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt 
 import models.utils as utils, models.preprocess as preprocess
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report
 from sklearn.model_selection import PredefinedSplit
+from sklearn.inspection import permutation_importance
 from sklearn.model_selection import GridSearchCV
 
-def random_forest_exp():
+def neural_network_exp():
     print("="*60)
-    print("Running experiement on Random Forest...")
+    print("Running experiement on Neural Networks...")
     TRAIN_SET = utils.get_data_directory()
     TEST_SET = utils.get_data_directory(fileName="/experiment-dataset.csv")
 
@@ -23,19 +24,19 @@ def random_forest_exp():
     ps = PredefinedSplit(separation_boundary)
 
     param_grid = {
-        'criterion': ['gini', 'entropy'],
-        'min_samples_split': [2, 4, 5, 10, 13],
-        'min_samples_leaf': [1, 2, 5, 8, 13]
+        'activation': ['logistic', 'identity', 'tanh', 'relu'],
+        'hidden_layer_sizes': [(80), (20, 10, 20, 10, 20)], 
+        'solver': ['adam', 'sgd'],
     }
 
-    clf = GridSearchCV(RandomForestClassifier(random_state=0), param_grid, cv=ps)
+    clf = GridSearchCV(MLPClassifier(random_state=0), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
     utils.display_metrics(report_dict)
-    print(f'\nScore of Random Forest: {round(model.score(X_test, y_test), 3)}')
+    print(f'\nScore of Neural Network: {round(model.score(X_test, y_test), 3)}')
  
-    feature_importances = model.best_estimator_.feature_importances_
-    top_feature_importances = list(sorted(enumerate(feature_importances), key = lambda x: x[1], reverse = True))
+    imps = permutation_importance(model, X_test, y_test)
+    top_feature_importances = list(sorted(enumerate(imps.importances_mean), key = lambda x: x[1], reverse = True))
     utils.log_results(top_feature_importances)
-    utils.generate_report("Experiment RF", "Experimental Random Forest", model, X_test, y_test, report_dict)
+    utils.generate_report("Experiment NN", "Experimental Neural Network", model, X_test, y_test, report_dict)
