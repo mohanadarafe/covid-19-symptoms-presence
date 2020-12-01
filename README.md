@@ -13,7 +13,9 @@ We will experiment how strong our models are by fully training one dataset & tes
 
 ### Data
 The datasets were collected from the following Kaggle repositories.
+
 [Main dataset](https://www.kaggle.com/hemanthhari/symptoms-and-covid-presence)
+
 [Experiment dataset](https://www.kaggle.com/prakharsrivastava01/covid19-symptoms-dataset)
 
 ### Setup
