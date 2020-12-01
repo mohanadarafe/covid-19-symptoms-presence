@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report
 from sklearn.inspection import permutation_importance
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 
 def random_forest(sampling = False, isNotebook = False):
     print("="*60)
@@ -35,7 +35,7 @@ def random_forest(sampling = False, isNotebook = False):
         'min_samples_leaf': [1, 2, 5, 8, 13]
     }
 
-    clf = RandomizedSearchCV(RandomForestClassifier(), param_grid, cv=ps)
+    clf = GridSearchCV(RandomForestClassifier(), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import models.preprocess as preprocess, models.utils as utils
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.inspection import permutation_importance
 from sklearn.model_selection import PredefinedSplit
 
@@ -34,7 +34,7 @@ def neural_network(sampling = False):
         'max_iter': [200]
     }
 
-    clf = RandomizedSearchCV(MLPClassifier(), param_grid, cv=ps)
+    clf = GridSearchCV(MLPClassifier(), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])

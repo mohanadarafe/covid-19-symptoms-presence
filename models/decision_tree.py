@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import models.preprocess as preprocess, models.utils as utils
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import classification_report
 from sklearn.metrics import plot_confusion_matrix
 from sklearn.model_selection import PredefinedSplit
@@ -34,7 +34,7 @@ def decision_tree(sampling = False, isNotebook = False, sampling_rate = 0.5):
         'min_samples_leaf': [1, 2, 5, 8, 13]
     }
 
-    clf = RandomizedSearchCV(DecisionTreeClassifier(), param_grid, cv=ps)
+    clf = GridSearchCV(DecisionTreeClassifier(), param_grid, cv=ps)
     model = clf.fit(X_grid, y_grid)
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
     utils.display_metrics(report_dict)
