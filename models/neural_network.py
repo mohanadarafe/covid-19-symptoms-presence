@@ -29,7 +29,7 @@ def neural_network(sampling = False, isNotebook = False):
 
     param_grid = {
         'activation': ['logistic', 'identity', 'tanh', 'relu'],
-        'hidden_layer_sizes': [(80), (20, 10, 20, 10, 20)], 
+        'hidden_layer_sizes': [(100), (10, 20, 10, 20, 10, 20, 10)], 
         'solver': ['adam', 'sgd'],
     }
 
