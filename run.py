@@ -14,10 +14,10 @@ if __name__ == "__main__":
 
     # Change argument to True to use oversampling
     start = time.time()
-    gnb.naive_bayes()
-    dt.decision_tree()
-    rf.random_forest()
-    svm.support_vector_machine()
-    nn.neural_network()
+    gnb.naive_bayes(True)
+    dt.decision_tree(True)
+    rf.random_forest(True)
+    svm.support_vector_machine(True)
+    nn.neural_network(True)
     end = time.time()
     print(f'Done training the models in {round(end-start, 3)} seconds')

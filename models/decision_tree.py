@@ -35,6 +35,12 @@ def decision_tree(sampling = False, isNotebook = False, sampling_rate = 0.5):
 
     clf = GridSearchCV(DecisionTreeClassifier(random_state=0), param_grid, cv=ps)
     model = clf.fit(X_grid, y_grid)
+    train_acc = model.score(X_train, y_train)
+    val_acc = model.score(X_val, y_val)
+    test_acc = model.score(X_test, y_test)
+    print(f'training score: {round(train_acc, 3)}')
+    print(f'validation score: {round(val_acc, 3)}')
+    print(f'testing score: {round(test_acc, 3)}')
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
     
     feature_importances = model.best_estimator_.feature_importances_

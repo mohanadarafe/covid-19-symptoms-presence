@@ -30,16 +30,22 @@ def support_vector_machine(sampling = False, isNotebook = False):
     param_grid = {
         'C': [1.0, 10.0, 100.0, 1000.0],
         'gamma': [0.01, 0.10, 1.00, 10.00],
-        'kernel': ['linear']
+        'kernel': ['rbf', 'poly']
     }
 
     clf = GridSearchCV(SVC(random_state=0, probability=True), param_grid, cv=ps)
 
     model = clf.fit(X_grid, y_grid)
+    train_acc = model.score(X_train, y_train)
+    val_acc = model.score(X_val, y_val)
+    test_acc = model.score(X_test, y_test)
+    print(f'training score: {round(train_acc, 3)}')
+    print(f'validation score: {round(val_acc, 3)}')
+    print(f'testing score: {round(test_acc, 3)}')
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
 
-    weights = model.best_estimator_.coef_
-    top_weights = list(sorted(enumerate(weights[0]), key = lambda x: x[1], reverse = True))
+    weights = permutation_importance(model, X_test, y_test)
+    top_weights = list(sorted(enumerate(weights.importances_mean), key = lambda x: x[1], reverse = True))
 
     if isNotebook:
         return top_weights, model

@@ -22,6 +22,10 @@ def naive_bayes(sampling = False, isNotebook = False):
     X_train, X_test, y_train, y_test = utils.split_data(X, y, 0.8)
 
     model = clf.fit(X_train, y_train)
+    train_acc = model.score(X_train, y_train)
+    test_acc = model.score(X_test, y_test)
+    print(f'training score: {round(train_acc, 3)}')
+    print(f'testing score: {round(test_acc, 3)}')
     report_dict = classification_report(y_test, model.predict(X_test), output_dict = True, target_names=["No", "Yes"])
 
     '''
